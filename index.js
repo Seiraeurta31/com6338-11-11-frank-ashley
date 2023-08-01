@@ -13,20 +13,36 @@ const makePoemHTML = (poem) =>{
   console.log(poem) 
   
   //Make Title Tag
-  const titleTag = makeTag('h2')(poem[0].title)
+  const titleTag = makeTag("h2")(poem[0].title)
 
   //Make Author Tag using pipe
-  const makeEm = makeTag('em')
-  const makeH3 = makeTag('h3')
+  const makeEm = makeTag("em")
+  const makeH3 = makeTag("h3")
   const makeAuthorTag = pipe(makeEm, makeH3)
   const authorTag = makeAuthorTag(`by ${poem[0].author}`)
 
-  // poem.map()
 
-  var finalString = `${titleTag} ${authorTag}`
+  //Convert poem JSON to single string and added special character to denote line end
+  const strConvertPoemToString = poem[0].lines.join('|*')
+
+  //Split poem string by stanzas per line space
+  const arrDivideByStanza = strConvertPoemToString.split('|*|*')
+
+  //Replaced all line breaks with <br> tag
+  const arrAddLineBreaks = arrDivideByStanza.map(line => line.replaceAll('|*', '<br>'))
+  
+  //wrapped each stanza with <p></p> and combined as one large string
+  var strFinalPoemString = ""
+  arrAddLineBreaks.forEach((stanza) => {
+    var strStanzaTag = makeTag("p")(stanza)
+    strFinalPoemString += strStanzaTag
+  })
+
+  //Combined all elements of poem and returned to innerHTML
+  var finalString = `${titleTag}${authorTag}${strFinalPoemString}`
+
+  console.log(finalString)
   return finalString
- 
-
 }
 
 // attach a click event to #get-poem
