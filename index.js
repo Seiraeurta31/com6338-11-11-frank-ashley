@@ -23,17 +23,14 @@ const makePoemHTML = (poem) =>{
 
 
   //Convert poem JSON to single string and added special character to denote line end
-  const strConvertPoemToString = poem[0].lines.join('|*')
+  const poemToString = poem[0].lines.join('|*')
 
-  //Split poem string by stanzas per line space
-  const arrDivideByStanza = strConvertPoemToString.split('|*|*')
-
-  //Replaced all line breaks with <br> tag
-  const arrAddLineBreaks = arrDivideByStanza.map(line => line.replaceAll('|*', '<br>'))
+  //Split poem string by stanzas per line space and add line breaks
+  const arrStanzas = poemToString.split('|*|*').map(line => line.replaceAll('|*', '<br>'))
   
   //wrapped each stanza with <p></p> and combined as one large string
   var strFinalPoemString = ""
-  arrAddLineBreaks.forEach((stanza) => {
+  arrStanzas.forEach((stanza) => {
     var strStanzaTag = makeTag("p")(stanza)
     strFinalPoemString += strStanzaTag
   })
